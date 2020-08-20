@@ -25,10 +25,7 @@ public class Stamina : MonoBehaviour
     private void Update()
     {
         UpdateHUD();
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            DrainStamina(10f);
-        }
+        DrainStamina(10f);
     }
 
     private void UpdateHUD()
@@ -43,6 +40,11 @@ public class Stamina : MonoBehaviour
         {
             staminaEffect.fillAmount = currentStamina / 100;
         }
+    }
+
+    public void Run()
+    {
+
     }
 
     public void DrainStamina(float value)
