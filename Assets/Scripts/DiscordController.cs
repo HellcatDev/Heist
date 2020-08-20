@@ -21,8 +21,8 @@ public class DiscordController : MonoBehaviour
 			ActivityManager activityManager = discord.GetActivityManager();
 			Activity activity = new Activity
 			{
+				Details = "",
 				State = "In Main Menu",
-				Details = "Debugging :)",
 				Timestamps =
 				{
 					Start = DateTimeOffset.Now.ToUnixTimeSeconds(),
@@ -83,7 +83,7 @@ public class DiscordController : MonoBehaviour
 		if (discordPresent == true)
 		{
 			Debug.Log("Disposing DRP...");
-			discordPresent = true;
+			discordPresent = false;
 			discord.Dispose();
 			Debug.Log("Disposed.");
 		}
