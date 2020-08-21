@@ -14,63 +14,91 @@ public class DiscordController : MonoBehaviour
 	// Use this for initialization
 	void Awake()
 	{
+		DontDestroyOnLoad(gameObject);
 		if (discordRichPresence)
 		{
-			discord = new Discord.Discord(743408930482552852, (ulong)CreateFlags.NoRequireDiscord);
-			discordPresent = true;
-			ActivityManager activityManager = discord.GetActivityManager();
-			Activity activity = new Activity
+			StartDRP();
+		}
+	}
+
+	public void StartDRP()
+	{
+		discord = new Discord.Discord(743408930482552852, (ulong)CreateFlags.NoRequireDiscord);
+		discordPresent = true;
+		ActivityManager activityManager = discord.GetActivityManager();
+		Activity activity = new Activity
+		{
+			Details = "",
+			State = "In Main Menu",
+			Timestamps =
 			{
-				Details = "",
-				State = "In Main Menu",
+				Start = DateTimeOffset.Now.ToUnixTimeSeconds(),
+			},
+			Assets =
+			{
+				LargeImage = "heist_logo",
+				LargeText = "Heist",
+				SmallImage = "map-gas_station",
+				SmallText = "Gas Station Robbery",
+			}
+		};
+		activityManager.UpdateActivity(activity, (res) =>
+		{
+			if (res == Result.Ok)
+			{
+				Debug.Log("Discord Rich Presence active.");
+			}
+		});
+	}
+
+	public void UpdateActivity()
+	{
+		if (discordPresent == true)
+		{
+			var activityManager = discord.GetActivityManager();
+			//var lobbyManager = discord.GetLobbyManager();
+
+			var activity = new Activity
+			{
+				Details = "Playing Solo",
+				State = "In Game",
 				Timestamps =
 				{
 					Start = DateTimeOffset.Now.ToUnixTimeSeconds(),
+					End = DateTimeOffset.Now.ToUnixTimeSeconds() + 900,
 				},
 				Assets =
 				{
-					LargeImage = "heist_logo",
-					LargeText = "Heist",
-					SmallImage = "map-gas_station",
-					SmallText = "Gas Station Robbery",
+					LargeImage = "map-gas_station",
+					LargeText = "Gas Station Robbery",
+					SmallImage = "difficulty-nightmare",
+					SmallText = "Nightmare Difficulty",
+				},
+				Party =
+				{
+				   Size =
+					{
+						CurrentSize = 1,
+						MaxSize = 1,
+					},
 				}
 			};
 			activityManager.UpdateActivity(activity, (res) =>
 			{
 				if (res == Result.Ok)
 				{
-					Debug.Log("Discord Rich Presence active.");
+					Debug.Log("Discord Rich Presence updated.");
 				}
 			});
 		}
+		else
+		{
+			Debug.Log("Discord is not present.");
+		}
 	}
 
-  //  static void UpdateActivity(Discord.Discord discord, Lobby lobby)
-  //  {
-  //      var activityManager = discord.GetActivityManager();
-  //      var lobbyManager = discord.GetLobbyManager();
-
-  //      var activity = new Activity
-		//{
-		//	State = "Heist",
-		//	Details = "Debugging! Yay!",
-		//	Assets =
-		//	{
-		//		LargeImage = "heist_logo",
-		//		LargeText = "Heist",
-		//		SmallImage = "map-gas_station",
-		//		SmallText = "Gas Station Robbery",
-		//	}
-		//};
-
-		//activityManager.UpdateActivity(activity, result =>
-  //      {
-  //          Debug.Log("Discord Rich Presence active.");
-  //      });
-  //  }
-
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
 	{
 		if (discordPresent == true)
 		{

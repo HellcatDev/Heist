@@ -20,9 +20,11 @@ public class SettingsManager : MonoBehaviour
     public Slider soundVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider dialogVolumeSlider;
+    public Toggle discordRichPresence;
 
     public Resolution[] resolutions;
     public GameSettings gameSettings;
+    public DiscordController discordController;
 
     private void OnEnable()
     {
@@ -44,6 +46,17 @@ public class SettingsManager : MonoBehaviour
         dialogVolumeSlider.onValueChanged.AddListener(delegate { OnDialogVolumeChange(); });
 
         resolutions = Screen.resolutions;
+
+        
+    }
+
+    private void Start()
+    {
+        if (discordController.discordPresent == false)
+        {
+            discordRichPresence.isOn = false;
+            discordRichPresence.interactable = false;
+        }
     }
 
     public void OnFullscreenToggle()
@@ -139,6 +152,20 @@ public class SettingsManager : MonoBehaviour
     public void OnDialogVolumeChange()
     {
 
+    }
+
+    public void OnDiscordRichPresence()
+    {
+        if (discordRichPresence.isOn == true)
+        {
+            discordController.discordRichPresence = true;
+            discordController.StartDRP();
+        }
+        else
+        {
+            discordController.discordRichPresence = false;
+            discordController.DRPShutdown();
+        }
     }
 
     public void SaveSettings()

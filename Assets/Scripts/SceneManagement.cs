@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
+    public DiscordController discordController;
+
     public void LoadNewScene(string sceneName)
     {
+        discordController.UpdateActivity();
         SceneManager.LoadScene(sceneName);
     }
 }
