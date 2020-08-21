@@ -15395,7 +15395,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hellcat69420
+  m_text: TimSweenyMonkey
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dd021e861951f9e42aac7c9041204916, type: 2}
   m_sharedMaterial: {fileID: 1649144765813474585, guid: dd021e861951f9e42aac7c9041204916,
@@ -15465,7 +15465,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1211842157}
-    characterCount: 12
+    characterCount: 15
     spriteCount: 0
     spaceCount: 0
     wordCount: 1

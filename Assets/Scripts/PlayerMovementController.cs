@@ -9,6 +9,7 @@ public class PlayerMovementController : MonoBehaviour
     public float sprintSpeed = 3.5f;
     public float rotateSpeed = 180f;
     public float jumpyForce = 10;
+    public Stamina stam;
 
     private float currentSpeed = 0;
     private float velocity = 0f;
@@ -30,6 +31,15 @@ public class PlayerMovementController : MonoBehaviour
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal") * currentSpeed;
         float _verticalInput = Input.GetAxisRaw("Vertical") * currentSpeed;
+
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        {
+            if (stam.GetCurrentStamina() > 0)
+            {
+                _verticalInput += sprintSpeed;
+            }
+            stam.Run();
+        }
 
         if (controller.isGrounded == true)
         {

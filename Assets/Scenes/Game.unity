@@ -2607,6 +2607,8 @@ MonoBehaviour:
   staminaEffect: {fileID: 1240450276}
   handle: {fileID: 1756677835}
   animationIncrement: 0.035
+  staminaRegen: 1
+  staminaEfficency: 1
   currentStamina: 0
 --- !u!136 &8451435737227941062
 CapsuleCollider:
@@ -2636,9 +2638,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGravity: 40
   movementSpeed: 4
-  sprintSpeed: 6
+  sprintSpeed: 3.5
   rotateSpeed: 180
   jumpyForce: 12
+  stam: {fileID: 8451435737227941061}
 --- !u!4 &8563190102548593230
 Transform:
   m_ObjectHideFlags: 0

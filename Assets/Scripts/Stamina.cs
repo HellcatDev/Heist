@@ -12,20 +12,33 @@ public class Stamina : MonoBehaviour
     public Image handle;
     [Range(0f, 1f)]
     public float animationIncrement;
+    [Range(1f, 1.5f)]
+    public float staminaRegen = 1f;
+    [Range(0.5f, 1f)]
+    public float staminaEfficency = 1f;
 
     [SerializeField]
     private float currentStamina = 0f;
+    private float timeSinceLastSprint;
 
     // Start is called before the first frame update
     void Start()
     {
         currentStamina = maxStamina;
+        timeSinceLastSprint = Time.time;
     }
 
     private void Update()
     {
         UpdateHUD();
-        DrainStamina(10f);
+        if (Time.time >= timeSinceLastSprint)
+        {
+            currentStamina += ( 25f * staminaRegen ) * Time.deltaTime;
+            if (currentStamina > maxStamina)
+            {
+                currentStamina = maxStamina;
+            }
+        }
     }
 
     private void UpdateHUD()
@@ -44,7 +57,12 @@ public class Stamina : MonoBehaviour
 
     public void Run()
     {
-
+        timeSinceLastSprint = Time.time + 1f;
+        currentStamina -= ( 25f * staminaEfficency ) * Time.deltaTime;
+        if (currentStamina < 0)
+        {
+            currentStamina = 0;
+        }
     }
 
     public void DrainStamina(float value)
