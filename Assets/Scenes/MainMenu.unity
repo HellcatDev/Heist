@@ -15105,6 +15105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d7627134deddf4b8b52c4166c10ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  discordController: {fileID: 744528027}
 --- !u!1 &1199617434
 GameObject:
   m_ObjectHideFlags: 0
