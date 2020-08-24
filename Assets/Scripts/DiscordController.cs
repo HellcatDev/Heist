@@ -14,42 +14,12 @@ public class DiscordController : MonoBehaviour
 	// Use this for initialization
 	void Awake()
 	{
-		StartFakeDRP();
-		return;
 		DontDestroyOnLoad(gameObject);
 		if (discordRichPresence)
 		{
 			StartDRP();
 		}
 	}
-
-	public void StartFakeDRP()
-    {
-		discord = new Discord.Discord(746362608143171674, (ulong)CreateFlags.NoRequireDiscord);
-		discordPresent = true;
-		ActivityManager activityManager = discord.GetActivityManager();
-		Activity activity = new Activity
-		{
-			Details = "Im back tommorrow",
-			State = "Or at 10pm idk",
-			Timestamps =
-			{
-				Start = DateTimeOffset.Now.ToUnixTimeSeconds(),
-			},
-			Assets =
-			{
-				LargeImage = "jackson",
-				LargeText = "this is jackson",
-			}
-		};
-		activityManager.UpdateActivity(activity, (res) =>
-		{
-			if (res == Result.Ok)
-			{
-				Debug.Log("Discord Rich Presence active.");
-			}
-		});
-	}	
 
 	public void StartDRP()
 	{
