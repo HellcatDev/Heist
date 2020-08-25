@@ -44,7 +44,7 @@ public class Stamina : MonoBehaviour
     private void UpdateHUD()
     {
         staminaBar.fillAmount = currentStamina / 100;
-        handle.rectTransform.localPosition = new Vector2(-(currentStamina * 3.1f), 0f);
+        handle.rectTransform.localPosition = new Vector2(-(currentStamina * 4.2f), 0f);
         if (currentStamina / 100 < staminaEffect.fillAmount)
         {
             staminaEffect.fillAmount = Mathf.Lerp(staminaEffect.fillAmount, currentStamina / 100, animationIncrement);
