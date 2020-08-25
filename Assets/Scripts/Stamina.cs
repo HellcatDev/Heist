@@ -58,7 +58,7 @@ public class Stamina : MonoBehaviour
     public void Run()
     {
         timeSinceLastSprint = Time.time + 1f;
-        currentStamina -= ( 25f * staminaEfficency ) * Time.deltaTime;
+        currentStamina -= (25f * staminaEfficency) * Time.deltaTime;
         if (currentStamina < 0)
         {
             currentStamina = 0;
