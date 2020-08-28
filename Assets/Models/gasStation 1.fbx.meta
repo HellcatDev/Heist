@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f1a0d2b8e15df1240bdb36867c0240d0
+guid: 705be374cf054784dae48534a543d2de
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
@@ -17,11 +17,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Bricks
-    second: {fileID: 2100000, guid: e4a0d02f3bea5724a83e6b91ae7f7e5b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Concrete
     second: {fileID: 2100000, guid: 4caacd76e5f722d418343ac645955398, type: 2}
   - first:
@@ -32,8 +27,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Gas Station Curb Concrete
+    second: {fileID: 2100000, guid: be4f93526f9518a428b5ed9201db9999, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: GasStationRoad
     second: {fileID: 2100000, guid: be4f93526f9518a428b5ed9201db9999, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: 3b81a71f28627824e94d0c019b9ca47e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -47,13 +52,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Mesh
+    second: {fileID: 2100000, guid: c1743c7e9ed45f04592eea1a619471c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Metal
     second: {fileID: 2100000, guid: b25fa35403af34a4f88638ae575d2c11, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: No Name
-    second: {fileID: 2100000, guid: 9dffc8754702a964595ee7c3aef41124, type: 2}
+      name: Pipe Metal
+    second: {fileID: 2100000, guid: 55310cb89c467574da1fc12d86545e32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pole Red Metal
+    second: {fileID: 2100000, guid: 98bb146fbda39f34f8015f8dd76006bf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -69,6 +84,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: White
     second: {fileID: 2100000, guid: 14244f9c79f8d8346b5174ba82b5bebd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Metal
+    second: {fileID: 2100000, guid: 0b5543519274b0f4c997cb626a0cc069, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
