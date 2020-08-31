@@ -7,7 +7,7 @@ public class Door : MonoBehaviour
     private Animator anim;
 
     public bool automatic = false;
-    public KeyColour colour = KeyColour.none;
+    //public KeyColour colour = KeyColour.none;
     public bool locked = false;
 
     /// <summary>

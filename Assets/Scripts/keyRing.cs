@@ -14,61 +14,61 @@ public class keyRing : MonoBehaviour
     /// It will check, depending on the given parameter (key), if the key.colour is equal to a predefined colour. If it hasn't been picked up and added, then
     /// it will set the variable (hasBlue, hasRed etc.) to true.
     /// </summary>
-    public bool AddKey(KeyCard key)
-    {
-        if (key.colour == KeyColour.blue)
-        {
-            if (hasBlue == false)
-            {
-                hasBlue = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (key.colour == KeyColour.red)
-        {
-            if (hasRed == false)
-            {
-                hasRed = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (key.colour == KeyColour.green)
-        {
-            if (hasGreen == false)
-            {
-                hasGreen = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (key.colour == KeyColour.yellow)
-        {
-            if (hasYellow == false)
-            {
-                hasYellow = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
+    //public bool AddKey(KeyCard key)
+    //{
+    //    if (key.colour == KeyColour.blue)
+    //    {
+    //        if (hasBlue == false)
+    //        {
+    //            hasBlue = true;
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else if (key.colour == KeyColour.red)
+    //    {
+    //        if (hasRed == false)
+    //        {
+    //            hasRed = true;
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else if (key.colour == KeyColour.green)
+    //    {
+    //        if (hasGreen == false)
+    //        {
+    //            hasGreen = true;
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else if (key.colour == KeyColour.yellow)
+    //    {
+    //        if (hasYellow == false)
+    //        {
+    //            hasYellow = true;
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
 
     /// <summary>
     /// These 4 functions return the values of the corresponding key colour to check if the player has picked them up.
