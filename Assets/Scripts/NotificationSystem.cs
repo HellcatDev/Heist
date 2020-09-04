@@ -95,7 +95,8 @@ public class NotificationSystem : MonoBehaviour
                         notificationTitle.text = i.Key;
                         notificationDescription.text = i.Value;
                         notificationToRemove = i.Key;
-                    } else { break; }
+                    }
+                    else { break; }
                     count++;
                 }
                 notificationQueue.Remove(notificationToRemove);
