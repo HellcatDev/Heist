@@ -51,51 +51,51 @@ public class DiscordController : MonoBehaviour
 		});
 	}
 
-	public void UpdateActivity()
-	{
-		if (discordPresent == true)
-		{
-			var activityManager = discord.GetActivityManager();
-			//var lobbyManager = discord.GetLobbyManager();
+	//public void UpdateActivity()
+	//{
+	//	if (discordPresent == true)
+	//	{
+	//		var activityManager = discord.GetActivityManager();
+	//		//var lobbyManager = discord.GetLobbyManager();
 
-			var activity = new Activity
-			{
-				Details = "Playing Solo",
-				State = "In Game",
-				Timestamps =
-				{
-					Start = DateTimeOffset.Now.ToUnixTimeSeconds(),
-					End = DateTimeOffset.Now.ToUnixTimeSeconds() + 900,
-				},
-				Assets =
-				{
-					LargeImage = "map-gas_station",
-					LargeText = "Gas Station Robbery",
-					SmallImage = "difficulty-nightmare",
-					SmallText = "Nightmare Difficulty",
-				},
-				Party =
-				{
-				   Size =
-					{
-						CurrentSize = 1,
-						MaxSize = 1,
-					},
-				}
-			};
-			activityManager.UpdateActivity(activity, (res) =>
-			{
-				if (res == Result.Ok)
-				{
-					Debug.Log("Discord Rich Presence updated.");
-				}
-			});
-		}
-		else
-		{
-			Debug.Log("Discord is not present.");
-		}
-	}
+	//		var activity = new Activity
+	//		{
+	//			Details = "Playing Solo",
+	//			State = "In Game",
+	//			Timestamps =
+	//			{
+	//				Start = DateTimeOffset.Now.ToUnixTimeSeconds(),
+	//				End = DateTimeOffset.Now.ToUnixTimeSeconds() + 900,
+	//			},
+	//			Assets =
+	//			{
+	//				LargeImage = "map-gas_station",
+	//				LargeText = "Gas Station Robbery",
+	//				SmallImage = "difficulty-nightmare",
+	//				SmallText = "Nightmare Difficulty",
+	//			},
+	//			Party =
+	//			{
+	//			   Size =
+	//				{
+	//					CurrentSize = 1,
+	//					MaxSize = 1,
+	//				},
+	//			}
+	//		};
+	//		activityManager.UpdateActivity(activity, (res) =>
+	//		{
+	//			if (res == Result.Ok)
+	//			{
+	//				Debug.Log("Discord Rich Presence updated.");
+	//			}
+	//		});
+	//	}
+	//	else
+	//	{
+	//		Debug.Log("Discord is not present.");
+	//	}
+	//}
 
 	// Update is called once per frame
 	void Update()

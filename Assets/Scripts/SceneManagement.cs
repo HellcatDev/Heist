@@ -9,7 +9,6 @@ public class SceneManagement : MonoBehaviour
 
     public void LoadNewScene(string sceneName)
     {
-        discordController.UpdateActivity();
         SceneManager.LoadScene(sceneName);
     }
 }
