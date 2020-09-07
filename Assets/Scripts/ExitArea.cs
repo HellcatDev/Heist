@@ -2,10 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class ExitArea : MonoBehaviour
 {
     public PocketManager pockets;
+    public Score score;
+    public Image endScreen;
+    public TMP_Text percentageText;
+    public TMP_Text scoreText;
+    public TMP_Text pocketSlotsText;
+    public TMP_Text pocketPercentageText;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,7 +21,11 @@ public class ExitArea : MonoBehaviour
         {
             if (pockets.pocketSlots > 0f)
             {
-                SceneManager.LoadScene(3);
+                endScreen.gameObject.SetActive(true);
+                percentageText.text = "You escaped with your pockets " + pockets.pocketPercentage.ToString() + "% full";
+                scoreText.text = "Score: " + score.playerScore;
+                pocketSlotsText.text = "Pocket Slots: " + pockets.pocketSlots.ToString() + "/" + pockets.maxPocketSlots.ToString();
+                pocketPercentageText.text = "Pocket Percentage: " + pockets.pocketPercentage.ToString() + "%";
             }
         }
     }

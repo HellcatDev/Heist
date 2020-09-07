@@ -11,9 +11,7 @@ public class PocketManager : MonoBehaviour
     public TMP_Text pocketPercentageText;
     public TMP_Text pocketSlotsText;
     public Color pocketSpaceUnavaliableColor;
-
-    [SerializeField]
-    private float maxPocketSlots = 24;
+    public float maxPocketSlots = 24;
 
     // Start is called before the first frame update
     void Start()
