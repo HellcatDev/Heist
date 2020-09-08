@@ -21,6 +21,9 @@ public class DiscordController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Starts discord rich presence with a new activity of the client ID of Heist.
+	/// </summary>
 	public void StartDRP()
 	{
 		discord = new Discord.Discord(743408930482552852, (ulong)CreateFlags.NoRequireDiscord);
@@ -97,7 +100,9 @@ public class DiscordController : MonoBehaviour
 	//	}
 	//}
 
-	// Update is called once per frame
+	/// <summary>
+	/// Makes sure callbacks are run otherwise the thread will be disposed by discords servers.
+	/// </summary>
 	void Update()
 	{
 		if (discordPresent == true)
@@ -105,7 +110,10 @@ public class DiscordController : MonoBehaviour
 			discord.RunCallbacks();
 		}
 	}
-
+	
+	/// <summary>
+	/// closing the thread
+	/// </summary>
 	public void DRPShutdown()
 	{
 		if (discordPresent == true)

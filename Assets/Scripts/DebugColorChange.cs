@@ -20,16 +20,6 @@ public class DebugColorChange : MonoBehaviour
         defaultColor = colorChange.color;
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Escape))
-    //    {
-    //        anim.SetBool("Active", false);
-    //        colorChange.color = defaultColor;
-    //        highlighted = false;
-    //    }
-    //}
-
     /// <summary>
     /// When called, checks if the button is highlighted and then reverses it. If it is false, then it will be true and vise versa.
     /// </summary>

@@ -28,6 +28,9 @@ public class Stamina : MonoBehaviour
         timeSinceLastSprint = Time.time;
     }
 
+    /// <summary>
+    /// Updates the hud and stamina bars.
+    /// </summary>
     private void Update()
     {
         UpdateHUD();
@@ -41,6 +44,9 @@ public class Stamina : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the stamina bar and stamina effect with the calculated values.
+    /// </summary>
     private void UpdateHUD()
     {
         staminaBar.fillAmount = currentStamina / 100;
@@ -55,19 +61,13 @@ public class Stamina : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When called each frame, it drains the stamina by 25 per second (depending on staminaEfficency).
+    /// </summary>
     public void Run()
     {
         timeSinceLastSprint = Time.time + 1f;
         currentStamina -= (25f * staminaEfficency) * Time.deltaTime;
-        if (currentStamina < 0)
-        {
-            currentStamina = 0;
-        }
-    }
-
-    public void DrainStamina(float value)
-    {
-        currentStamina -= value;
         if (currentStamina < 0)
         {
             currentStamina = 0;

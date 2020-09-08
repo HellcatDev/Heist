@@ -28,6 +28,11 @@ public class PocketManager : MonoBehaviour
         pocketSlotsText.text = pocketSlots.ToString() + "/" + maxPocketSlots.ToString();
     }
 
+    /// <summary>
+    /// Returns false is the pockets cannot hold the amount specified, returns true if it can hold the amount specified.
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <returns></returns>
     public bool CanPocketsHold(int amount)
     {
         if (pocketSlots + amount > maxPocketSlots)
@@ -39,6 +44,11 @@ public class PocketManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Adds the amount specified to the players pockets if the pockets have enough space. If pockets do not have space,
+    /// it will update the UI.
+    /// </summary>
+    /// <param name="amount"></param>
     public void AddToPockets(int amount)
     {
         if (pocketSlots + amount <= maxPocketSlots)

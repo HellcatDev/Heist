@@ -15,6 +15,10 @@ public class ExitArea : MonoBehaviour
     public TMP_Text pocketSlotsText;
     public TMP_Text pocketPercentageText;
 
+    /// <summary>
+    /// checks to see if the player has more than 0 items in their pockets, then updates UI if true.
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -26,6 +30,7 @@ public class ExitArea : MonoBehaviour
                 scoreText.text = "Score: " + score.playerScore;
                 pocketSlotsText.text = "Pocket Slots: " + pockets.pocketSlots.ToString() + "/" + pockets.maxPocketSlots.ToString();
                 pocketPercentageText.text = "Pocket Percentage: " + pockets.pocketPercentage.ToString() + "%";
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }

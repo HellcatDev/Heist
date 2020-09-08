@@ -31,6 +31,10 @@ public class Tooltip : MonoBehaviour
         UpdateSize();
     }
 
+    /// <summary>
+    /// Updates the size of the tooltip to fit the text. It first calculates the background size using the preferredWidth of the
+    /// tooltip text. It then updates that size and applies it to the backgrounds transform.
+    /// </summary>
     private void UpdateSize()
     {
         float textPaddingSize = 4f;
@@ -48,6 +52,9 @@ public class Tooltip : MonoBehaviour
         backgroundRectTransform.sizeDelta = backgroundSize;
     }
 
+    /// <summary>
+    /// Updates the position of the tooltip to the cursor leaving a margin to make sure that the mouse can't hover over the tooltip itself.
+    /// </summary>
     private void UpdatePosition()
     {
         Vector2 localPoint;

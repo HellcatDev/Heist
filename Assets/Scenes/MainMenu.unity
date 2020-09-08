@@ -175,7 +175,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 16%
+  m_text: 100%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dd021e861951f9e42aac7c9041204916, type: 2}
   m_sharedMaterial: {fileID: 1649144765813474585, guid: dd021e861951f9e42aac7c9041204916,
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 5885283}
-    characterCount: 3
+    characterCount: 4
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -5107,7 +5107,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 069
+  m_text: 001
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6f57cb0a9442491459366738428a7745, type: 2}
   m_sharedMaterial: {fileID: 5058270137377104571, guid: 6f57cb0a9442491459366738428a7745,
@@ -6975,6 +6975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 159399b8564d8ce4d9ed689849a7284c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableDiscord: 1
   discord: {fileID: 744528027}
 --- !u!1 &619886282
 GameObject:
@@ -9915,7 +9916,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: useless shit
+  m_text: nothing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6f57cb0a9442491459366738428a7745, type: 2}
   m_sharedMaterial: {fileID: 5058270137377104571, guid: 6f57cb0a9442491459366738428a7745,
@@ -9985,10 +9986,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 829730331}
-    characterCount: 12
+    characterCount: 7
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -13464,7 +13465,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: oh yeah
+  m_text: this button does nothing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dd021e861951f9e42aac7c9041204916, type: 2}
   m_sharedMaterial: {fileID: 1649144765813474585, guid: dd021e861951f9e42aac7c9041204916,
@@ -13534,10 +13535,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1094677999}
-    characterCount: 7
+    characterCount: 24
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 3
+    wordCount: 4
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -16333,7 +16334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 35%
+  m_text: 0%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6f57cb0a9442491459366738428a7745, type: 2}
   m_sharedMaterial: {fileID: 5058270137377104571, guid: 6f57cb0a9442491459366738428a7745,
@@ -16362,7 +16363,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 16
+  m_fontSize: 21.55
   m_fontSizeBase: 14.61
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -16403,7 +16404,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1390276664}
-    characterCount: 3
+    characterCount: 2
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -17843,7 +17844,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0.35
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -22631,7 +22632,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 420
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dd021e861951f9e42aac7c9041204916, type: 2}
   m_sharedMaterial: {fileID: 1649144765813474585, guid: dd021e861951f9e42aac7c9041204916,
@@ -22701,7 +22702,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1764142405}
-    characterCount: 3
+    characterCount: 1
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -26640,7 +26641,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 69
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dd021e861951f9e42aac7c9041204916, type: 2}
   m_sharedMaterial: {fileID: 1649144765813474585, guid: dd021e861951f9e42aac7c9041204916,
@@ -26710,7 +26711,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2125870720}
-    characterCount: 2
+    characterCount: 1
     spriteCount: 0
     spaceCount: 0
     wordCount: 1

@@ -18,6 +18,9 @@ public class NotificationSystem : MonoBehaviour
     private float sinceLastNotification = 0f;
     private Dictionary<string, string> notificationQueue = new Dictionary<string, string>();
 
+    /// <summary>
+    /// Checks if discord is present.
+    /// </summary>
     private void Start()
     {
         discordController = GameObject.Find("DiscordRichPresenceManager").GetComponent<DiscordController>();

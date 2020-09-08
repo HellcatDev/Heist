@@ -14,7 +14,10 @@ public class UICharacter : MonoBehaviour
     private float mouseInput;
     private bool isDragging = false;
 
-    // Update is called once per frame
+    /// <summary>
+    /// Checks to see if the mouse button is being held down, if true it checks if the mouse is over the object and if that is also true
+    /// it will then set isDragging  to true. While isDragging is true it allows the cursor to control the characters rotation.
+    /// </summary>
     void Update()
     {
         if (Input.GetMouseButton(0))

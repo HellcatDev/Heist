@@ -7,6 +7,8 @@ using UnityEngine.Audio;
 
 public class GameSettings
 {
+    // This script will be completed next semester.
+
     public bool fullscreen;
     public int antiAliasing;
     public int vSync;

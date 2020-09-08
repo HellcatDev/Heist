@@ -15,6 +15,10 @@ public class SceneLoading : MonoBehaviour
         StartCoroutine(LoadAsyncOperation());
     }
 
+    /// <summary>
+    /// Starts an asyncronous scene loading operation of the game scene and fills the loading screen bar progress.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadAsyncOperation()
     {
         AsyncOperation gameLevel = SceneManager.LoadSceneAsync(1);

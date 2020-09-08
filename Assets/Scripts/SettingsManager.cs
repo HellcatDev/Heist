@@ -6,6 +6,8 @@ using TMPro;
 
 public class SettingsManager : MonoBehaviour
 {
+    // Script will be completed next semester.
+
     public Toggle fullscreenToggle;
     public TMP_Dropdown resolutionDropdown;
     public TMP_Dropdown antiAliasingDropdown;
@@ -26,6 +28,9 @@ public class SettingsManager : MonoBehaviour
     public GameSettings gameSettings;
     public DiscordController discordController;
 
+    /// <summary>
+    /// Adds listeners to buttons which listens to the value changing of drop downs, toggles and buttons.
+    /// </summary>
     private void OnEnable()
     {
         gameSettings = new GameSettings();

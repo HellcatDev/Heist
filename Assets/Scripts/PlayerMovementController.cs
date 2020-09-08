@@ -26,7 +26,10 @@ public class PlayerMovementController : MonoBehaviour
         currentSpeed = movementSpeed;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Calculates horizontal and vertical (x and z) movement using the input from those axis. It then applies this movement
+    /// using the ApplyMovement() function.
+    /// </summary>
     void Update()
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal") * currentSpeed;
@@ -41,24 +44,31 @@ public class PlayerMovementController : MonoBehaviour
             stam.Run();
         }
 
-        if (controller.isGrounded == true)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) == true)
-            {
-                velocity = jumpyForce;
-            }
-            else
-            {
-                velocity = -playerGravity * Time.deltaTime;
-            }
-        }
-        else
-        {
-            velocity -= playerGravity * Time.deltaTime;
-        }
+        //if (controller.isGrounded == true)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space) == true)
+        //    {
+        //        velocity = jumpyForce;
+        //    }
+        //    else
+        //    {
+        //        velocity = -playerGravity * Time.deltaTime;
+        //    }
+        //}
+        //else
+        //{
+        //    velocity -= playerGravity * Time.deltaTime;
+        //}
 
         ApplyMovement(_verticalInput, _horizontalInput, velocity);
     }
+
+    /// <summary>
+    /// This function applies movement to the transform of the player.
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="h"></param>
+    /// <param name="velocity"></param>
     void ApplyMovement(float v, float h, float velocity)
     {
         Vector3 move = Vector3.zero;

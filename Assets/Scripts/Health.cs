@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    // This script will be used next semester.
+
     public float maxHealth = 100f;
     public Image healthbar;
     public Image healthEffect;
@@ -25,12 +27,11 @@ public class Health : MonoBehaviour
     private void Update()
     {
         UpdateHUD();
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            ApplyDamage(20);
-        }
     }
 
+    /// <summary>
+    /// Updates the HUD and animations for health effects.
+    /// </summary>
     private void UpdateHUD()
     {
         healthbar.fillAmount = currentHealth / 100;
@@ -45,6 +46,10 @@ public class Health : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies damage and checks if health is below zero
+    /// </summary>
+    /// <param name="damageValue"></param>
     public void ApplyDamage(float damageValue)
     {
         currentHealth -= damageValue;

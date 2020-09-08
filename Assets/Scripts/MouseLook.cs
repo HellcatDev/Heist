@@ -16,6 +16,7 @@ public class MouseLook : MonoBehaviour
     void Start()
     {
         characterObject = transform.parent.gameObject;
+        Cursor.lockState = CursorLockMode.Locked;
 
     }
 
@@ -24,9 +25,6 @@ public class MouseLook : MonoBehaviour
     {
         if (mouseLookEnabled == true)
         {
-            // Locking Cursor to center of screen.
-            Cursor.lockState = CursorLockMode.Locked;
-
             // Getting raw input of the mouse x and mouse y.
             Vector2 mouseDirection = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 

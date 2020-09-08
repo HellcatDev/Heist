@@ -32,7 +32,7 @@ public class ButtonOutline : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Sets outline amount
     /// </summary>
     /// <param name="outlineAmount"></param>
     public void SetOutline(int outlineAmount)

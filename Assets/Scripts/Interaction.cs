@@ -11,6 +11,9 @@ public class Interaction : MonoBehaviour
     public TMP_Text pickupName;
     public TMP_Text pickupWorth;
     public PocketManager pockets;
+    public CameraAI cameraSight;
+    public CameraAI cameraSight2;
+    public GameObject loseScreen;
 
     private Camera mainCamera;
 
@@ -20,6 +23,11 @@ public class Interaction : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    /// <summary>
+    /// In this update function, we cast a raycast and check if the object infront of the player is an interactable item.
+    /// If it is, it will check if the cameras can see the player and pickup the item. If the cameras can see the player,
+    /// the lose screen is set as active.
+    /// </summary>
     // Update is called once per frame
     void Update()
     {
@@ -33,6 +41,12 @@ public class Interaction : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     hit.transform.GetComponent<Item>().PickupItem();
+                    if (cameraSight.canSeePlayer == true || cameraSight2.canSeePlayer == true)
+                    {
+                        loseScreen.SetActive(true);
+                        Cursor.lockState = CursorLockMode.None;
+                        Debug.Log("Lose");
+                    }
                 }
             }
             else
