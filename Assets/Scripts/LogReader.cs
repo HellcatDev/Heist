@@ -9,6 +9,7 @@ public class LogReader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         fileManager.Start();
     }
 
@@ -29,10 +30,10 @@ public class LogReader : MonoBehaviour
         return f;
     }
 
-    public float LoadIntByKey(string key)
+    public int LoadIntByKey(string key)
     {
-        float i = 0;
-        float.TryParse(fileManager.LocateStringByKey(key), out i);
+        int i = 0;
+        int.TryParse(fileManager.LocateStringByKey(key), out i);
         return i;
     }
 
