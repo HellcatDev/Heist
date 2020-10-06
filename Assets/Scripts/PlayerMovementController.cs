@@ -44,21 +44,21 @@ public class PlayerMovementController : MonoBehaviour
             stam.Run();
         }
 
-        //if (controller.isGrounded == true)
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Space) == true)
-        //    {
-        //        velocity = jumpyForce;
-        //    }
-        //    else
-        //    {
-        //        velocity = -playerGravity * Time.deltaTime;
-        //    }
-        //}
-        //else
-        //{
-        //    velocity -= playerGravity * Time.deltaTime;
-        //}
+        if (controller.isGrounded == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) == true)
+            {
+                velocity = jumpyForce;
+            }
+            else
+            {
+                velocity = -playerGravity * Time.deltaTime;
+            }
+        }
+        else
+        {
+            velocity -= playerGravity * Time.deltaTime;
+        }
 
         ApplyMovement(_verticalInput, _horizontalInput, velocity);
     }
