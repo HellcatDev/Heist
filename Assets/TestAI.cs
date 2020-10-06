@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum BehaviourID { idle, wander }
+public enum BehaviourID { idle, wander, chase, investigate }
 
 public class TestAI : MonoBehaviour
 {
     public BehaviourID initialState;
     [Header("Wander Behaviour")]
     public Bounds boundBox;
+    [Header("Detection")]
+    public float lookRadius;
+    public float soundDetectionRadius;
 
     private Transform target;
     private NavMeshAgent agent;
@@ -30,12 +33,64 @@ public class TestAI : MonoBehaviour
 
     private void Update()
     {
+        CheckLineOfSight();
         if (currentState == BehaviourID.wander)
         {
+            //controls wandering
             Vector3 targetDistance = transform.position - targetPosition;
             if (targetDistance.magnitude <= agent.stoppingDistance)
             {
                 GetNewWanderPoint();
+            }
+        }
+        else if (currentState == BehaviourID.chase)
+        {
+            if (target != null)
+            {
+                agent.SetDestination(target.position);
+            }
+            else
+            {
+                SetState(BehaviourID.wander);
+            }
+        }
+        else if (currentState == BehaviourID.investigate)
+        {
+            //things for investigate behaviour
+        }
+    }
+
+    private void CheckLineOfSight()
+    {
+        if (target == null)
+        {
+            //controls player detection
+            Collider[] colliderCheck = Physics.OverlapSphere(transform.position, lookRadius);
+            foreach (Collider col in colliderCheck)
+            {
+                if (col.CompareTag("Player") == true)
+                {
+                    //Vector3 dir = col.transform.position - transform.position; how to calculate direction :)
+                    if (Physics.Linecast(transform.position, col.transform.position, out RaycastHit hit))
+                    {
+                        if (hit.transform.CompareTag("Player") == true)
+                        {
+                            target = col.transform;
+                            SetState(BehaviourID.chase);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, target.position);
+            if (distance > lookRadius)
+            {
+                SetState(BehaviourID.wander);
+                agent.SetDestination(target.position);
+                targetPosition = target.position;
+                target = null;
             }
         }
     }
@@ -48,12 +103,21 @@ public class TestAI : MonoBehaviour
             //initialize behaviour according to state id
             if(stateID == BehaviourID.idle)
             {
-                //idle
+                agent.isStopped = true;
             }
             else if (stateID == BehaviourID.wander)
             {
                 //wander
+                agent.isStopped = false;
                 GetNewWanderPoint();
+            }
+            else if (stateID == BehaviourID.chase)
+            {
+                agent.isStopped = false;
+            }
+            else if (stateID == BehaviourID.investigate)
+            {
+                agent.isStopped = false;
             }
             currentState = stateID;
         }
@@ -71,6 +135,10 @@ public class TestAI : MonoBehaviour
         Gizmos.DrawWireCube(boundBox.center, boundBox.size);
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawSphere(targetPosition, 0.2f);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, soundDetectionRadius);
     }
 
     private Vector3 GetRandomPosInBounds()
