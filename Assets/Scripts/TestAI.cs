@@ -87,10 +87,21 @@ public class TestAI : MonoBehaviour
             float distance = Vector3.Distance(transform.position, target.position);
             if (distance > lookRadius)
             {
-                SetState(BehaviourID.wander);
-                agent.SetDestination(target.position);
-                targetPosition = target.position;
-                target = null;
+                if (Physics.Linecast(transform.position, target.transform.position, out RaycastHit hit))
+                {
+                    if (hit.transform.CompareTag("Player") == true)
+                    {
+                        target = hit.transform;
+                        SetState(BehaviourID.chase);
+                    }
+                    else
+                    {
+                        SetState(BehaviourID.wander);
+                        agent.SetDestination(target.position);
+                        targetPosition = target.position;
+                        target = null;
+                    }
+                }
             }
         }
     }
