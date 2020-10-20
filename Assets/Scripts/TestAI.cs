@@ -13,6 +13,7 @@ public class TestAI : MonoBehaviour
     [Header("Detection")]
     public float lookRadius;
     public float soundDetectionRadius;
+    public float enemyFovAngle = 45f;
 
     private Transform target;
     private NavMeshAgent agent;
@@ -70,13 +71,19 @@ public class TestAI : MonoBehaviour
             {
                 if (col.CompareTag("Player") == true)
                 {
+                    Vector3 fovRadius = gameObject.transform.forward * lookRadius;
+                    float distanceToPlayer = Vector3.Distance(Camera.main.transform.position, fovRadius);
+                    float playerAngle = Vector3.Angle(Camera.main.transform.position, fovRadius);
                     //Vector3 dir = col.transform.position - transform.position; how to calculate direction :)
-                    if (Physics.Linecast(transform.position, col.transform.position, out RaycastHit hit))
+                    if (playerAngle < enemyFovAngle)
                     {
-                        if (hit.transform.CompareTag("Player") == true)
+                        if (Physics.Linecast(transform.position, col.transform.position, out RaycastHit hit))
                         {
-                            target = col.transform;
-                            SetState(BehaviourID.chase);
+                            if (hit.transform.CompareTag("Player") == true)
+                            {
+                                target = col.transform;
+                                SetState(BehaviourID.chase);
+                            }
                         }
                     }
                 }
