@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum BehaviourID { idle, wander, chase, investigate }
+public enum BehaviourID { idle, wander, chase, investigate, patrol }
 
 public class TestAI : MonoBehaviour
 {
@@ -14,10 +14,15 @@ public class TestAI : MonoBehaviour
     public float lookRadius;
     public float soundDetectionRadius;
     public float enemyFovAngle = 45f;
+    [Header("Patrol Settings")]
+    public int points = 5;
 
     private Transform target;
     private NavMeshAgent agent;
+    [SerializeField]
     private BehaviourID currentState;
+    [SerializeField]
+    private Vector3[] storedPatrolPoints = new Vector3[0];
 
     private Vector3 targetPosition = Vector3.zero;
 
@@ -29,35 +34,114 @@ public class TestAI : MonoBehaviour
 
     private void Start()
     {
+        if (storedPatrolPoints.Length == 0)
+        {
+            storedPatrolPoints = new Vector3[points];
+            for (int i = 0; i < storedPatrolPoints.Length; i++) {
+                storedPatrolPoints[i] = GetRandomPosInBounds();
+            }
+        }
         SetState(initialState);
+
     }
 
     private void Update()
     {
         CheckLineOfSight();
-        if (currentState == BehaviourID.wander)
+        float targetDistance = Vector3.Distance(transform.position, targetPosition);
+        switch (currentState)
         {
-            //controls wandering
-            Vector3 targetDistance = transform.position - targetPosition;
-            if (targetDistance.magnitude <= agent.stoppingDistance)
-            {
-                GetNewWanderPoint();
-            }
+            case BehaviourID.idle:
+                // idle code
+                break;
+
+            case BehaviourID.wander:
+                if (targetDistance <= agent.stoppingDistance)
+                {
+                    GetNewWanderPoint();
+                }
+                break;
+
+            case BehaviourID.chase:
+                if (target != null)
+                {
+                    agent.SetDestination(target.position);
+                }
+                else
+                {
+                    SetState(BehaviourID.wander);
+                }
+                break;
+
+            case BehaviourID.investigate:
+                // investigate code
+                break;
+
+            case BehaviourID.patrol:
+                if(targetDistance <= agent.stoppingDistance)
+                {
+                    targetPosition = GetNextPatrolPoint();
+                    Debug.Log(targetPosition);
+                    agent.SetDestination(targetPosition);
+                }
+                break;
         }
-        else if (currentState == BehaviourID.chase)
+        //if (currentState == BehaviourID.wander)
+        //{
+        //    //controls wandering
+        //    Vector3 targetDistance = transform.position - targetPosition;
+        //    if (targetDistance.magnitude <= agent.stoppingDistance)
+        //    {
+        //        GetNewWanderPoint();
+        //    }
+        //}
+        //else if (currentState == BehaviourID.chase)
+        //{
+        //    if (target != null)
+        //    {
+        //        agent.SetDestination(target.position);
+        //    }
+        //    else
+        //    {
+        //        SetState(BehaviourID.wander);
+        //    }
+        //}
+        //else if (currentState == BehaviourID.investigate)
+        //{
+        //    //things for investigate behaviour
+        //}
+        //else if (currentState == BehaviourID.patrol)
+        //{
+
+        //}
+    }
+
+    private Vector3 GetNextPatrolPoint()
+    {
+        if (targetPosition == Vector3.zero)
         {
-            if (target != null)
-            {
-                agent.SetDestination(target.position);
-            }
-            else
-            {
-                SetState(BehaviourID.wander);
-            }
+            return storedPatrolPoints[0];
         }
-        else if (currentState == BehaviourID.investigate)
+        else
         {
-            //things for investigate behaviour
+            Vector3 point = targetPosition;
+            for (int i = 0; i < storedPatrolPoints.Length; i++)
+            {
+                if (storedPatrolPoints[i] == point)
+                {
+                    if (i + 1 >= storedPatrolPoints.Length)
+                    {
+                        point = storedPatrolPoints[0];
+                        break;
+                    }
+                    else
+                    {
+                        point = storedPatrolPoints[i + 1];
+                        break;
+                    }
+                }
+            }
+            return point;
         }
     }
 
@@ -137,6 +221,12 @@ public class TestAI : MonoBehaviour
             {
                 agent.isStopped = false;
             }
+            else if (stateID == BehaviourID.patrol)
+            {
+                agent.isStopped = false;
+                targetPosition = storedPatrolPoints[0];
+                agent.SetDestination(targetPosition);
+            }
             currentState = stateID;
         }
     }
@@ -157,6 +247,25 @@ public class TestAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lookRadius);
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, soundDetectionRadius);
+
+        // patrol point drawing
+        if (storedPatrolPoints.Length > 0)
+        {
+            foreach(Vector3 point in storedPatrolPoints)
+            {
+                if (targetPosition != point)
+                {
+                    Gizmos.color = new Color(1, 1, 0, 0.5f);
+                    Gizmos.DrawWireSphere(point, 0.2f);
+                }
+                else
+                {
+                    Gizmos.color = new Color(0, 1, 0, 0.5f);
+                    Gizmos.DrawWireSphere(point, 0.2f);
+                }
+            }
+        }
+        
     }
 
     private Vector3 GetRandomPosInBounds()
