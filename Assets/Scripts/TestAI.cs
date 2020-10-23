@@ -155,11 +155,10 @@ public class TestAI : MonoBehaviour
             {
                 if (col.CompareTag("Player") == true)
                 {
-                    Vector3 fovRadius = gameObject.transform.forward * lookRadius;
-                    float distanceToPlayer = Vector3.Distance(Camera.main.transform.position, fovRadius);
-                    float playerAngle = Vector3.Angle(Camera.main.transform.position, fovRadius);
-                    //Vector3 dir = col.transform.position - transform.position; how to calculate direction :)
-                    if (playerAngle < enemyFovAngle)
+                    Vector3 playerPosition = Camera.main.transform.position;
+                    Vector3 vectorToPlayer = playerPosition - transform.position;
+                    
+                    if (Vector3.Angle(-transform.right, vectorToPlayer) <= enemyFovAngle)
                     {
                         if (Physics.Linecast(transform.position, col.transform.position, out RaycastHit hit))
                         {
