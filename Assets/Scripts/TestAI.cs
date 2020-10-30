@@ -157,8 +157,18 @@ public class TestAI : MonoBehaviour
                 {
                     Vector3 playerPosition = Camera.main.transform.position;
                     Vector3 vectorToPlayer = playerPosition - transform.position;
-                    
-                    if (Vector3.Angle(-transform.right, vectorToPlayer) <= enemyFovAngle)
+                    float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+
+                    if (distanceToPlayer <= soundDetectionRadius)
+                    {
+                        if (col.GetComponent<PlayerMovementController>().crouching == false)
+                        {
+                            target = col.transform;
+                            SetState(BehaviourID.chase);
+                        }
+                    }
+
+                    if (Vector3.Angle(transform.forward, vectorToPlayer) <= enemyFovAngle)
                     {
                         if (Physics.Linecast(transform.position, col.transform.position, out RaycastHit hit))
                         {

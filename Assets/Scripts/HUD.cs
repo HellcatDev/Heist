@@ -8,10 +8,25 @@ public class HUD : MonoBehaviour
 {
     public bool enableDiscord = true;
     public DiscordController discord;
+    public Image stealthBarOne;
+    public Image stealthBarTwo;
+    [Range(0f, 1f)]
+    public float stealthFill;
 
     public void Play()
     {
 
+    }
+
+    public void UpdateStealth()
+    {
+        stealthBarOne.fillAmount = stealthFill;
+        stealthBarTwo.fillAmount = stealthFill;
+    }
+
+    private void Update()
+    {
+        UpdateStealth();
     }
 
     public void Settings()

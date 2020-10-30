@@ -8,8 +8,11 @@ public class PlayerMovementController : MonoBehaviour
     public float movementSpeed = 2.0f;
     public float sprintSpeed = 3.5f;
     public float rotateSpeed = 180f;
+    [Range(0f, 1f)]
+    public float crouchSpeedMultiplier = 0.58f;
     public float jumpyForce = 10;
     public Stamina stam;
+    public bool crouching = false;
 
     private float currentSpeed = 0;
     private float velocity = 0f;
@@ -35,7 +38,18 @@ public class PlayerMovementController : MonoBehaviour
         float _horizontalInput = Input.GetAxisRaw("Horizontal") * currentSpeed;
         float _verticalInput = Input.GetAxisRaw("Vertical") * currentSpeed;
 
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            _verticalInput *= crouchSpeedMultiplier;
+            _horizontalInput *= crouchSpeedMultiplier;
+            crouching = true;
+        }
+        else
+        {
+            crouching = false;
+        }
+
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) == false)
         {
             if (stam.GetCurrentStamina() > 0)
             {
@@ -46,7 +60,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if (controller.isGrounded == true)
         {
-            if (Input.GetKeyDown(KeyCode.Space) == true)
+            if (Input.GetKeyDown(KeyCode.Space) == true && Input.GetKey(KeyCode.LeftControl) == false)
             {
                 velocity = jumpyForce;
             }
