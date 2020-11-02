@@ -13,6 +13,7 @@ public class PlayerMovementController : MonoBehaviour
     public float jumpyForce = 10;
     public Stamina stam;
     public bool crouching = false;
+    public static float alertLevel;
 
     private float currentSpeed = 0;
     private float velocity = 0f;

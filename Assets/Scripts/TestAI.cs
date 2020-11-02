@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum BehaviourID { idle, wander, chase, investigate, patrol }
+public enum BehaviourID { idle, wander, chase, investigate, patrol, alerted }
 
 public class TestAI : MonoBehaviour
 {
@@ -56,6 +56,7 @@ public class TestAI : MonoBehaviour
                 break;
 
             case BehaviourID.wander:
+                PlayerMovementController.alertLevel -= 0.15f * Time.deltaTime;
                 if (targetDistance <= agent.stoppingDistance)
                 {
                     GetNewWanderPoint();
@@ -63,6 +64,7 @@ public class TestAI : MonoBehaviour
                 break;
 
             case BehaviourID.chase:
+                
                 if (target != null)
                 {
                     agent.SetDestination(target.position);
@@ -74,11 +76,22 @@ public class TestAI : MonoBehaviour
                 break;
 
             case BehaviourID.investigate:
-                // investigate code
+                PlayerMovementController.alertLevel -= 0.15f * Time.deltaTime;
+                if (PlayerMovementController.alertLevel < 0.79f)
+                {
+                    PlayerMovementController.alertLevel = 0.79f;
+                }
+                if (targetDistance <= agent.stoppingDistance)
+                {
+                    SetState(BehaviourID.wander);
+                }
                 break;
-
+            case BehaviourID.alerted:
+                
+                break;
             case BehaviourID.patrol:
-                if(targetDistance <= agent.stoppingDistance)
+                PlayerMovementController.alertLevel -= 0.15f * Time.deltaTime;
+                if (targetDistance <= agent.stoppingDistance)
                 {
                     targetPosition = GetNextPatrolPoint();
                     Debug.Log(targetPosition);
@@ -86,34 +99,15 @@ public class TestAI : MonoBehaviour
                 }
                 break;
         }
-        //if (currentState == BehaviourID.wander)
-        //{
-        //    //controls wandering
-        //    Vector3 targetDistance = transform.position - targetPosition;
-        //    if (targetDistance.magnitude <= agent.stoppingDistance)
-        //    {
-        //        GetNewWanderPoint();
-        //    }
-        //}
-        //else if (currentState == BehaviourID.chase)
-        //{
-        //    if (target != null)
-        //    {
-        //        agent.SetDestination(target.position);
-        //    }
-        //    else
-        //    {
-        //        SetState(BehaviourID.wander);
-        //    }
-        //}
-        //else if (currentState == BehaviourID.investigate)
-        //{
-        //    //things for investigate behaviour
-        //}
-        //else if (currentState == BehaviourID.patrol)
-        //{
-
-        //}
+        if (PlayerMovementController.alertLevel > 1f)
+        {
+            PlayerMovementController.alertLevel = 1f;
+        }
+        
+        if (PlayerMovementController.alertLevel < 0f)
+        {
+            PlayerMovementController.alertLevel = 0f;
+        }
     }
 
     private Vector3 GetNextPatrolPoint()
@@ -163,6 +157,7 @@ public class TestAI : MonoBehaviour
                     {
                         if (col.GetComponent<PlayerMovementController>().crouching == false)
                         {
+                            PlayerMovementController.alertLevel = 0.8f;
                             target = col.transform;
                             SetState(BehaviourID.chase);
                         }
@@ -175,7 +170,15 @@ public class TestAI : MonoBehaviour
                             if (hit.transform.CompareTag("Player") == true)
                             {
                                 target = col.transform;
-                                SetState(BehaviourID.chase);
+                                PlayerMovementController.alertLevel += 0.3f * Time.deltaTime;
+                                if (PlayerMovementController.alertLevel >= 0.8f)
+                                {
+                                    SetState(BehaviourID.chase);
+                                }
+                                else
+                                {
+                                    SetState(BehaviourID.alerted);
+                                }
                             }
                         }
                     }
@@ -191,17 +194,22 @@ public class TestAI : MonoBehaviour
                 {
                     if (hit.transform.CompareTag("Player") == true)
                     {
+                        PlayerMovementController.alertLevel += 0.3f * Time.deltaTime;
                         target = hit.transform;
                         SetState(BehaviourID.chase);
                     }
                     else
                     {
-                        SetState(BehaviourID.wander);
+                        SetState(BehaviourID.investigate);
                         agent.SetDestination(target.position);
                         targetPosition = target.position;
                         target = null;
                     }
                 }
+            }
+            else
+            {
+                if (currentState == )
             }
         }
     }
@@ -214,27 +222,36 @@ public class TestAI : MonoBehaviour
             //initialize behaviour according to state id
             if(stateID == BehaviourID.idle)
             {
+                agent.speed = 1f;
                 agent.isStopped = true;
             }
             else if (stateID == BehaviourID.wander)
             {
-                //wander
+                agent.speed = 1f;
                 agent.isStopped = false;
                 GetNewWanderPoint();
             }
             else if (stateID == BehaviourID.chase)
             {
+                agent.speed = 1.7f;
                 agent.isStopped = false;
             }
             else if (stateID == BehaviourID.investigate)
             {
+                agent.speed = 1.5f;
                 agent.isStopped = false;
             }
             else if (stateID == BehaviourID.patrol)
             {
+                agent.speed = 1f;
                 agent.isStopped = false;
                 targetPosition = storedPatrolPoints[0];
                 agent.SetDestination(targetPosition);
+            }
+            else if (stateID == BehaviourID.alerted)
+            {
+                agent.speed = 0.4f;
+                agent.isStopped = false;
             }
             currentState = stateID;
         }
