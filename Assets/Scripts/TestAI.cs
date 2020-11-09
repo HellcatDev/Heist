@@ -207,10 +207,10 @@ public class TestAI : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                if (currentState == )
-            }
+            //else
+            //{
+            //    if (currentState == )
+            //}
         }
     }
 

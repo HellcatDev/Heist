@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class HUD : MonoBehaviour
 {
     public bool enableDiscord = true;
+    public static bool paused = false;
     public DiscordController discord;
     public Image stealthBarOne;
     public Image stealthBarTwo;
@@ -14,6 +15,7 @@ public class HUD : MonoBehaviour
     public float stealthFill;
     public Animator stealthColor;
     public Animator stealthGroup;
+    public Animator pauseMenuAnimator;
 
     public void Play()
     {
@@ -46,6 +48,31 @@ public class HUD : MonoBehaviour
     private void Update()
     {
         UpdateStealth();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (paused == false)
+            {
+                TogglePause(true);
+            }
+            else
+            {
+                TogglePause(false);
+            }
+        }
+    }
+
+    public void TogglePause(bool pauseToggle)
+    {
+        if (pauseToggle == true)
+        {
+            pauseMenuAnimator.SetBool("Paused", true);
+            paused = true;
+        }
+        else
+        {
+            pauseMenuAnimator.SetBool("Paused", false);
+            paused = false;
+        }
     }
 
     public void Settings()
