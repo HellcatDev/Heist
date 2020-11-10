@@ -6975,13 +6975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 159399b8564d8ce4d9ed689849a7284c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableDiscord: 1
   discord: {fileID: 744528027}
-  stealthBarOne: {fileID: 0}
-  stealthBarTwo: {fileID: 0}
-  stealthFill: 0
-  stealthColor: {fileID: 0}
-  stealthGroup: {fileID: 0}
 --- !u!1 &619886282
 GameObject:
   m_ObjectHideFlags: 0
@@ -8789,7 +8783,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationSystem: {fileID: 1351651506}
   discordRichPresence: 0
-  discordPresent: 0
 --- !u!4 &744528028
 Transform:
   m_ObjectHideFlags: 0
@@ -13067,6 +13060,7 @@ GameObject:
   - component: {fileID: 1064360604}
   - component: {fileID: 1064360603}
   - component: {fileID: 1064360602}
+  - component: {fileID: 1064360605}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -13139,6 +13133,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1064360605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064360601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb5153a089e5ba4f8bd34900d256187, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1076399263
 GameObject:
   m_ObjectHideFlags: 0

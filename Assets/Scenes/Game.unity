@@ -4493,6 +4493,7 @@ GameObject:
   - component: {fileID: 796657133}
   - component: {fileID: 796657135}
   - component: {fileID: 796657134}
+  - component: {fileID: 796657136}
   m_Layer: 5
   m_Name: Pause Menu
   m_TagString: Untagged
@@ -4534,7 +4535,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 01e72185a3ce5e04b81ed1c99edd0889, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -4549,10 +4550,22 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796657132}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &796657136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796657132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b33c38c3245b845991e7eed80764d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &798287933
 GameObject:
   m_ObjectHideFlags: 0
@@ -9087,6 +9100,7 @@ GameObject:
   - component: {fileID: 1463099426}
   - component: {fileID: 1463099428}
   - component: {fileID: 1463099427}
+  - component: {fileID: 1463099429}
   m_Layer: 5
   m_Name: Stealth UI
   m_TagString: Untagged
@@ -9141,10 +9155,27 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463099425}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1463099429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463099425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b686d650e1a9f4d4fb2ddcfc0c7c94e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stealthBarOne: {fileID: 480976442}
+  stealthBarTwo: {fileID: 1100707788}
+  stealthFill: 0
+  stealthColor: {fileID: 67351457}
+  stealthGroup: {fileID: 1463099427}
 --- !u!1 &1465130584
 GameObject:
   m_ObjectHideFlags: 0
@@ -9336,14 +9367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 159399b8564d8ce4d9ed689849a7284c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableDiscord: 0
   discord: {fileID: 0}
-  stealthBarOne: {fileID: 480976442}
-  stealthBarTwo: {fileID: 1100707788}
-  stealthFill: 0
-  stealthColor: {fileID: 67351457}
-  stealthGroup: {fileID: 1463099427}
-  pauseMenuAnimator: {fileID: 796657134}
 --- !u!1 &1501507955
 GameObject:
   m_ObjectHideFlags: 0
@@ -9650,6 +9674,17 @@ MonoBehaviour:
       - m_Target: {fileID: 1468688071}
         m_MethodName: MainMenu
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 796657136}
+        m_MethodName: TogglePause
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13296,7 +13331,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1468688071}
+      - m_Target: {fileID: 796657136}
         m_MethodName: TogglePause
         m_Mode: 6
         m_Arguments:
@@ -13526,7 +13561,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000061035156, y: 0}
-  m_SizeDelta: {x: 162, y: 44.1}
+  m_SizeDelta: {x: 100.63, y: 44.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086362015
 MonoBehaviour:
@@ -13838,7 +13873,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: edb2b28788ed5944cbea3be11b6dbb3f, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
