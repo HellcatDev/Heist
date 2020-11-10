@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
 
 public enum BehaviourID { idle, wander, chase, investigate, patrol, alerted }
 
@@ -18,6 +19,7 @@ public class AI : MonoBehaviour
     public float viewRadius;
     public float viewAngle = 45f;
     public float soundDetectionRadius;
+    public LayerMask sightDontIgnore;
     [Header("Patrol Settings")]
     public int points = 5;
 
@@ -34,6 +36,7 @@ public class AI : MonoBehaviour
     [SerializeField]
     private BehaviourID currentState;
     private float timeIdle = 0f;
+    private Vector3 debugMiddle;
 
     private void Awake()
     {
@@ -58,6 +61,8 @@ public class AI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        debugMiddle = new Vector3(transform.position.x, agent.height / 2, transform.position.z);
+        CanSeePlayer();
         // Check line of sight
         if (target != null)
         {
@@ -105,14 +110,32 @@ public class AI : MonoBehaviour
 
     private bool CanSeePlayer()
     {
-        Collider[] colliderCheck = Physics.OverlapSphere(transform.position, lookRadius);
-        foreach (Collider col in colliderCheck)
-        {
-            if (col.CompareTag("Player") == true)
-            {
+        
+        Vector3 playerPosition = Camera.main.transform.position;
+        Vector3 vectorToPlayer = playerPosition - transform.position;
 
+        if (Vector3.Distance(debugMiddle, playerPosition) <= viewRadius)
+        {
+            if (Vector3.Angle(transform.forward, vectorToPlayer) <= viewAngle)
+            {
+                if (Physics.Linecast(transform.position, playerPosition, out RaycastHit hit, sightDontIgnore))
+                {
+                    if (hit.transform.CompareTag("Player") == true)
+                    {
+                        Debug.DrawLine(debugMiddle, playerPosition, Color.red);
+                        return true;
+                    }
+                    Debug.DrawLine(debugMiddle, playerPosition, Color.yellow);
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.DrawLine(debugMiddle, playerPosition, Color.green);
+                return false;
             }
         }
+        return false;
     }
 
     private Vector3 GetNextPatrolPoint()
@@ -200,5 +223,41 @@ public class AI : MonoBehaviour
     {
         return new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
             Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector3 middlePosition = new Vector3(transform.position.x, 0.87f, transform.position.z);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(boundBox.center, boundBox.size);
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(targetPosition, 0.2f);
+        //Gizmos.color = Color.magenta;
+        //Gizmos.DrawWireSphere(transform.position, viewRadius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(middlePosition, soundDetectionRadius);
+        Handles.color = Color.white;
+        Handles.DrawWireArc(middlePosition, Vector3.up, Vector3.forward, 360, viewRadius);
+        Handles.color = new Color(1, 0, 0, 0.2f);
+        Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, viewAngle, viewRadius);
+        Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, -viewAngle, viewRadius);
+
+        // patrol point drawing
+        if (storedPatrolPoints.Length > 0)
+        {
+            foreach (Vector3 point in storedPatrolPoints)
+            {
+                if (targetPosition != point)
+                {
+                    Gizmos.color = new Color(1, 1, 0, 0.5f);
+                    Gizmos.DrawWireSphere(point, 0.2f);
+                }
+                else
+                {
+                    Gizmos.color = new Color(0, 1, 0, 0.5f);
+                    Gizmos.DrawWireSphere(point, 0.2f);
+                }
+            }
+        }
     }
 }
