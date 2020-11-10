@@ -72,7 +72,7 @@ LightmapSettings:
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
-    m_BakeBackend: 1
+    m_BakeBackend: 2
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 512
@@ -21957,9 +21957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99921cb3a000b0d4598d7217a1ded2d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 0.27058825, g: 0.6784314, b: 1, a: 0.627451}
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
-  background: {fileID: 604597076}
 --- !u!1 &1754955170
 GameObject:
   m_ObjectHideFlags: 0
@@ -22102,9 +22099,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99921cb3a000b0d4598d7217a1ded2d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 0.27058825, g: 0.6784314, b: 1, a: 0.627451}
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
-  background: {fileID: 604597076}
 --- !u!114 &1757418855
 MonoBehaviour:
   m_ObjectHideFlags: 0
