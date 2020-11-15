@@ -14,7 +14,6 @@ public class DiscordController : MonoBehaviour
 	// Use this for initialization
 	void Awake()
 	{
-		DontDestroyOnLoad(gameObject);
 		if (discordRichPresence)
 		{
 			StartDRP();

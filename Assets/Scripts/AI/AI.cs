@@ -8,10 +8,9 @@ public enum BehaviourID { idle, wander, chase, investigate, patrol, alerted }
 
 public class AI : MonoBehaviour
 {
-    
     [Header("AI Settings")]
     public float walkSpeed = 1.2f;
-    public float chaseSpeed = 1.7f;
+    public float runSpeed = 1.7f;
     public BehaviourID initialState = BehaviourID.idle;
     [Header("Wander Behaviour")]
     public Bounds boundBox;
@@ -62,35 +61,32 @@ public class AI : MonoBehaviour
     void Update()
     {
         debugMiddle = new Vector3(transform.position.x, agent.height / 2, transform.position.z);
-        CanSeePlayer();
-        // Check line of sight
+        CheckLineOfSight();
         if (target != null)
         {
             targetPosition = target.position;
         }
         float targetDistance = Vector3.Distance(transform.position, targetPosition);
+        Debug.Log($"Target Distance: {targetDistance}, {agent.stoppingDistance}");
         switch (currentState)
         {
             case BehaviourID.idle:
-                animator.SetBool("Walking", false);
                 if (Time.time >= timeIdle)
                 {
                     SetState(BehaviourID.wander);
                 }
                 break;
             case BehaviourID.wander:
-                animator.SetBool("Walking", true);
                 if (targetDistance <= agent.stoppingDistance)
                 {
-                    GetNewWanderPoint();
+                    SetState(BehaviourID.idle);
                 }
                 break;
             case BehaviourID.chase:
-                animator.SetBool("Walking", true);
                 if (target != null)
                 {
                     agent.SetDestination(targetPosition);
-                    if (targetDistance <= agent.stoppingDistance)
+                    if (targetDistance <= agent.stoppingDistance + 0.2f)
                     {
                         SetState(BehaviourID.idle);
                     }
@@ -100,21 +96,41 @@ public class AI : MonoBehaviour
                     SetState(BehaviourID.wander);
                 }
                 break;
+            case BehaviourID.investigate:
+                if (targetDistance <= agent.stoppingDistance + 0.2f)
+                {
+                    SetState(BehaviourID.idle);
+                }
+                break;
         }
     }
 
     private void CheckLineOfSight()
     {
-
+        if (CanSeePlayer() == true) // Self explanatory, can see player is true.
+        {
+            if (target == null) // If AI has no target set
+            {
+                target = Camera.main.transform.root; // set AI target to the player
+                SetState(BehaviourID.chase); // set AI state to chase
+            }
+        }
+        else // if AI can't see the player
+        {
+            if (target != null) // and target is not null
+            {
+                targetPosition = target.position; // set targetPosition to the last known position of the player
+                target = null; // target will now equal null
+                SetState(BehaviourID.investigate); // set AI state to investigate the last known position area.
+            }
+        }
     }
 
     private bool CanSeePlayer()
     {
-        
-        Vector3 playerPosition = Camera.main.transform.position;
+        Vector3 playerPosition = Camera.main.transform.root.position;
         Vector3 vectorToPlayer = playerPosition - transform.position;
-
-        if (Vector3.Distance(debugMiddle, playerPosition) <= viewRadius)
+        if (Vector3.Distance(debugMiddle, playerPosition) <= viewRadius || target != null)
         {
             if (Vector3.Angle(transform.forward, vectorToPlayer) <= viewAngle)
             {
@@ -175,39 +191,36 @@ public class AI : MonoBehaviour
             //initialize behaviour according to state id
             if (stateID == BehaviourID.idle)
             {
-                animator.SetBool("Walking", false);
+                animator.SetTrigger("Idle");
                 timeIdle = Time.time + Random.Range(1f, 7f);
                 agent.isStopped = true;
             }
             else if (stateID == BehaviourID.wander)
             {
-                animator.SetBool("Walking", true);
+                animator.SetTrigger("Walk");
                 agent.speed = walkSpeed;
                 agent.isStopped = false;
                 GetNewWanderPoint();
             }
             else if (stateID == BehaviourID.chase)
             {
-                agent.speed = chaseSpeed;
+                animator.SetTrigger("Run");
+                agent.speed = runSpeed;
                 agent.isStopped = false;
             }
             else if (stateID == BehaviourID.investigate)
             {
-                agent.speed = 1.5f;
+                animator.SetTrigger("Run");
+                agent.speed = runSpeed;
                 agent.isStopped = false;
             }
             else if (stateID == BehaviourID.patrol)
             {
-                animator.SetBool("Walking", true);
+                animator.SetTrigger("Walk");
                 agent.speed = walkSpeed;
                 agent.isStopped = false;
                 targetPosition = storedPatrolPoints[0];
                 agent.SetDestination(targetPosition);
-            }
-            else if (stateID == BehaviourID.alerted)
-            {
-                agent.speed = 0.4f;
-                agent.isStopped = false;
             }
             currentState = stateID;
         }
@@ -236,12 +249,14 @@ public class AI : MonoBehaviour
         //Gizmos.DrawWireSphere(transform.position, viewRadius);
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(middlePosition, soundDetectionRadius);
-        Handles.color = Color.white;
-        Handles.DrawWireArc(middlePosition, Vector3.up, Vector3.forward, 360, viewRadius);
-        Handles.color = new Color(1, 0, 0, 0.2f);
-        Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, viewAngle, viewRadius);
-        Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, -viewAngle, viewRadius);
-
+        if (Application.isEditor)
+        {
+            Handles.color = Color.white;
+            Handles.DrawWireArc(middlePosition, Vector3.up, Vector3.forward, 360, viewRadius);
+            Handles.color = new Color(1, 0, 0, 0.2f);
+            Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, viewAngle, viewRadius);
+            Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, -viewAngle, viewRadius);
+        }
         // patrol point drawing
         if (storedPatrolPoints.Length > 0)
         {
