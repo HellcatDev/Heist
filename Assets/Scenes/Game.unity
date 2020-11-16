@@ -10452,6 +10452,7 @@ MonoBehaviour:
   boundBox:
     m_Center: {x: 38.5, y: 0.5, z: 41.2}
     m_Extent: {x: 18.6, y: 0.5, z: 17}
+  investigateBoxSize: 3.23
   viewRadius: 10
   viewAngle: 45
   soundDetectionRadius: 5

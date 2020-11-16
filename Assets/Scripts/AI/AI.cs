@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEditor;
 
 public enum BehaviourID { idle, wander, chase, investigate, patrol, alerted }
 
@@ -12,18 +10,21 @@ public class AI : MonoBehaviour
     public float walkSpeed = 1.2f;
     public float runSpeed = 1.7f;
     public BehaviourID initialState = BehaviourID.idle;
-    [Header("Wander Behaviour")]
+    [Header("Bound Boxes")]
     public Bounds boundBox;
+    private Bounds investigateBox;
+    public float investigateBoxSize;
     [Header("Detection Settings")]
     public float viewRadius;
-    public float viewAngle = 45f;
+    public float initialViewAngle = 60f;
+    private float viewAngle;
     public float soundDetectionRadius;
     public LayerMask sightDontIgnore;
     [Header("Patrol Settings")]
     public int points = 5;
 
     [SerializeField]
-    private Vector3[] storedPatrolPoints = new Vector3[0];
+    private Vector3[] storedInvestigatePoints = new Vector3[0];
     [Header("Target Settings")]
     [SerializeField]
     private Transform target;
@@ -46,14 +47,8 @@ public class AI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (storedPatrolPoints.Length == 0)
-        {
-            storedPatrolPoints = new Vector3[points];
-            for (int i = 0; i < storedPatrolPoints.Length; i++)
-            {
-                storedPatrolPoints[i] = GetRandomPosInBounds();
-            }
-        }
+        investigateBox.size = new Vector3(investigateBoxSize, 1f, investigateBoxSize);
+
         SetState(initialState);
     }
 
@@ -67,22 +62,24 @@ public class AI : MonoBehaviour
             targetPosition = target.position;
         }
         float targetDistance = Vector3.Distance(transform.position, targetPosition);
-        Debug.Log($"Target Distance: {targetDistance}, {agent.stoppingDistance}");
         switch (currentState)
         {
             case BehaviourID.idle:
+                viewAngle = initialViewAngle;
                 if (Time.time >= timeIdle)
                 {
                     SetState(BehaviourID.wander);
                 }
                 break;
             case BehaviourID.wander:
+                viewAngle = initialViewAngle;
                 if (targetDistance <= agent.stoppingDistance)
                 {
                     SetState(BehaviourID.idle);
                 }
                 break;
             case BehaviourID.chase:
+                viewAngle = initialViewAngle;
                 if (target != null)
                 {
                     agent.SetDestination(targetPosition);
@@ -97,11 +94,67 @@ public class AI : MonoBehaviour
                 }
                 break;
             case BehaviourID.investigate:
-                if (targetDistance <= agent.stoppingDistance + 0.2f)
+                // AI is already running to first target.
+                // if AI is close to target
+                // start investigating
+                // while investigating do nothing
+                // if investigating has stopped
+                // get new point and start running
+                // repeat
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                 {
-                    SetState(BehaviourID.idle);
+                    if (targetDistance <= agent.stoppingDistance)
+                    {
+                        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Look Around") == false) // if animation is not already playing
+                        {
+                            animator.SetTrigger("Look Around"); // play animation
+                            viewAngle = 150f;
+                            agent.isStopped = true; // stop AI
+                            break;
+                        }
+                        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && animator.GetCurrentAnimatorStateInfo(0).IsName("Look Around") == true) // if animation has finished playing
+                        {
+                            targetPosition = GetNextPatrolPoint(); // get next point
+                            viewAngle = initialViewAngle;
+                            if (targetPosition == Vector3.zero) // if all patrol points have been cycled through
+                            {
+                                SetState(BehaviourID.wander); // wander
+                                break;
+                            }
+                            animator.SetTrigger("Run"); // play run animation
+                            agent.isStopped = false; // start AI
+                            agent.SetDestination(targetPosition); // set AI destination
+                        }
+                    }
+
                 }
                 break;
+
+
+
+
+                //if (targetDistance <= agent.stoppingDistance)
+                //{
+                //    if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.2f)
+                //    {
+                //        animator.SetTrigger("Look Around");
+                //        agent.isStopped = true;
+                //        Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                //        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.2f)
+                //        {
+                //            agent.isStopped = false;
+                //            animator.SetTrigger("Run");
+                //            targetPosition = GetNextPatrolPoint();
+                //            if (targetPosition == Vector3.zero)
+                //            {
+                //                SetState(BehaviourID.wander);
+                //                break;
+                //            }
+                //            agent.SetDestination(targetPosition);
+                //        }
+                //    }
+                //}
+                //break;
         }
     }
 
@@ -158,23 +211,23 @@ public class AI : MonoBehaviour
     {
         if (targetPosition == Vector3.zero)
         {
-            return storedPatrolPoints[0];
+            return storedInvestigatePoints[0];
         }
         else
         {
             Vector3 point = targetPosition;
-            for (int i = 0; i < storedPatrolPoints.Length; i++)
+            for (int i = 0; i < storedInvestigatePoints.Length; i++)
             {
-                if (storedPatrolPoints[i] == point)
+                if (storedInvestigatePoints[i] == point)
                 {
-                    if (i + 1 >= storedPatrolPoints.Length)
+                    if (i + 1 >= storedInvestigatePoints.Length)
                     {
-                        point = storedPatrolPoints[0];
+                        point = Vector3.zero;
                         break;
                     }
                     else
                     {
-                        point = storedPatrolPoints[i + 1];
+                        point = storedInvestigatePoints[i + 1];
                         break;
                     }
                 }
@@ -210,19 +263,32 @@ public class AI : MonoBehaviour
             }
             else if (stateID == BehaviourID.investigate)
             {
+                SetupInvestigatePoints();
                 animator.SetTrigger("Run");
                 agent.speed = runSpeed;
                 agent.isStopped = false;
-            }
-            else if (stateID == BehaviourID.patrol)
-            {
-                animator.SetTrigger("Walk");
-                agent.speed = walkSpeed;
-                agent.isStopped = false;
-                targetPosition = storedPatrolPoints[0];
+                targetPosition = storedInvestigatePoints[0];
                 agent.SetDestination(targetPosition);
             }
+            //else if (stateID == BehaviourID.patrol)
+            //{
+            //    animator.SetTrigger("Walk");
+            //    agent.speed = walkSpeed;
+            //    agent.isStopped = false;
+            //    targetPosition = storedInvestigatePoints[0];
+            //    agent.SetDestination(targetPosition);
+            //}
             currentState = stateID;
+        }
+    }
+
+    void SetupInvestigatePoints()
+    {
+        investigateBox.center = new Vector3(targetPosition.x, 0.5f, targetPosition.z);
+        storedInvestigatePoints = new Vector3[points];
+        for (int i = 0; i < storedInvestigatePoints.Length; i++)
+        {
+            storedInvestigatePoints[i] = GetRandomPosInInvestigateBounds();
         }
     }
 
@@ -234,8 +300,49 @@ public class AI : MonoBehaviour
 
     private Vector3 GetRandomPosInBounds()
     {
-        return new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
+        Vector3 newPosition = new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
             Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
+        while (CheckIfPositionIsWalkable(newPosition) == false)
+        {
+            newPosition = new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
+            Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
+        }
+        return newPosition;
+    }
+
+    private bool CheckIfPositionIsWalkable(Vector3 position)
+    {
+        bool check = false;
+        Collider[] colliderCheck = Physics.OverlapSphere(position, 0.5f);
+        foreach (Collider col in colliderCheck)
+        {
+            if (col.CompareTag("Building") != true)
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+                return check;
+            }
+        }
+        return check;
+    }
+
+    /// <summary>
+    /// Returns a new position within the investigate bounds
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 GetRandomPosInInvestigateBounds()
+    {
+        Vector3 newPosition = new Vector3(Random.Range(-investigateBox.extents.x + investigateBox.center.x, investigateBox.extents.x + investigateBox.center.x), transform.position.y,
+            Random.Range(-investigateBox.extents.z + investigateBox.center.z, investigateBox.extents.z + investigateBox.center.z));
+        while (CheckIfPositionIsWalkable(newPosition) == false)
+        {
+            newPosition = new Vector3(Random.Range(-investigateBox.extents.x + investigateBox.center.x, investigateBox.extents.x + investigateBox.center.x), transform.position.y,
+            Random.Range(-investigateBox.extents.z + investigateBox.center.z, investigateBox.extents.z + investigateBox.center.z));
+        }
+        return newPosition;
     }
 
     private void OnDrawGizmos()
@@ -249,6 +356,9 @@ public class AI : MonoBehaviour
         //Gizmos.DrawWireSphere(transform.position, viewRadius);
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(middlePosition, soundDetectionRadius);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube(investigateBox.center, investigateBox.size);
         if (Application.isEditor)
         {
             Handles.color = Color.white;
@@ -258,9 +368,9 @@ public class AI : MonoBehaviour
             Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, -viewAngle, viewRadius);
         }
         // patrol point drawing
-        if (storedPatrolPoints.Length > 0)
+        if (storedInvestigatePoints.Length > 0)
         {
-            foreach (Vector3 point in storedPatrolPoints)
+            foreach (Vector3 point in storedInvestigatePoints)
             {
                 if (targetPosition != point)
                 {
