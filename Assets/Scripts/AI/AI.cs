@@ -304,6 +304,7 @@ public class AI : MonoBehaviour
             Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
         while (CheckIfPositionIsWalkable(newPosition) == false)
         {
+            Debug.Log("Redoing point...");
             newPosition = new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
             Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
         }
@@ -316,16 +317,18 @@ public class AI : MonoBehaviour
         Collider[] colliderCheck = Physics.OverlapSphere(position, 0.5f);
         foreach (Collider col in colliderCheck)
         {
-            if (col.CompareTag("Building") != true)
+            if (col.CompareTag("Building") == false)
             {
                 check = true;
             }
             else
             {
                 check = false;
+                Debug.Log(check);
                 return check;
             }
         }
+        Debug.Log(check);
         return check;
     }
 
@@ -339,6 +342,7 @@ public class AI : MonoBehaviour
             Random.Range(-investigateBox.extents.z + investigateBox.center.z, investigateBox.extents.z + investigateBox.center.z));
         while (CheckIfPositionIsWalkable(newPosition) == false)
         {
+            Debug.Log("Redoing point...");
             newPosition = new Vector3(Random.Range(-investigateBox.extents.x + investigateBox.center.x, investigateBox.extents.x + investigateBox.center.x), transform.position.y,
             Random.Range(-investigateBox.extents.z + investigateBox.center.z, investigateBox.extents.z + investigateBox.center.z));
         }
