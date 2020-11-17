@@ -18,10 +18,12 @@ public class PlayerMovementController : MonoBehaviour
     private float currentSpeed = 0;
     private float velocity = 0f;
     private CharacterController controller;
+    private Animator anim;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -39,18 +41,29 @@ public class PlayerMovementController : MonoBehaviour
         float _horizontalInput = Input.GetAxisRaw("Horizontal") * currentSpeed;
         float _verticalInput = Input.GetAxisRaw("Vertical") * currentSpeed;
 
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             _verticalInput *= crouchSpeedMultiplier;
             _horizontalInput *= crouchSpeedMultiplier;
-            crouching = true;
-        }
-        else
-        {
-            crouching = false;
+            if (crouching)
+            {
+                anim.SetBool("Crouching", false);
+                crouching = false;
+            }
+            else
+            {
+                anim.SetBool("Crouching", true);
+                crouching = true;
+            }
         }
 
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl) == false)
+        if (crouching)
+        {
+            _verticalInput *= crouchSpeedMultiplier;
+            _horizontalInput *= crouchSpeedMultiplier;
+        }
+
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) && crouching == false)
         {
             if (stam.GetCurrentStamina() > 0)
             {
@@ -61,7 +74,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if (controller.isGrounded == true)
         {
-            if (Input.GetKeyDown(KeyCode.Space) == true && Input.GetKey(KeyCode.LeftControl) == false)
+            if (Input.GetKeyDown(KeyCode.Space) == true && crouching == false)
             {
                 velocity = jumpyForce;
             }

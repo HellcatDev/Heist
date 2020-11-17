@@ -73,7 +73,7 @@ public class AI : MonoBehaviour
                 break;
             case BehaviourID.wander:
                 viewAngle = initialViewAngle;
-                if (targetDistance <= agent.stoppingDistance)
+                if (targetDistance <= agent.stoppingDistance + 0.2f)
                 {
                     SetState(BehaviourID.idle);
                 }
@@ -167,6 +167,11 @@ public class AI : MonoBehaviour
                 target = Camera.main.transform.root; // set AI target to the player
                 SetState(BehaviourID.chase); // set AI state to chase
             }
+            else if (currentState == BehaviourID.wander)
+            {
+                target = Camera.main.transform.root;
+                SetState(BehaviourID.chase);
+            }
         }
         else // if AI can't see the player
         {
@@ -183,9 +188,27 @@ public class AI : MonoBehaviour
     {
         Vector3 playerPosition = Camera.main.transform.root.position;
         Vector3 vectorToPlayer = playerPosition - transform.position;
+        if (Vector3.Distance(debugMiddle, playerPosition) <= soundDetectionRadius)
+        {
+            if (Physics.Linecast(transform.position, playerPosition, out RaycastHit hit, sightDontIgnore))
+            {
+                if (hit.transform.CompareTag("Player") == true)
+                {
+                    if (hit.transform.GetComponent<PlayerMovementController>().crouching == false)
+                    {
+                        Debug.DrawLine(debugMiddle, playerPosition, Color.red);
+                        return true;
+                    }
+                    Debug.DrawLine(debugMiddle, playerPosition, Color.yellow);
+                    return false;
+                }
+                Debug.DrawLine(debugMiddle, playerPosition, Color.yellow);
+                return false;
+            }
+        }
         if (Vector3.Distance(debugMiddle, playerPosition) <= viewRadius || target != null)
         {
-            if (Vector3.Angle(transform.forward, vectorToPlayer) <= viewAngle)
+            if (Vector3.Angle(transform.forward, vectorToPlayer) <= viewAngle || target != null)
             {
                 if (Physics.Linecast(transform.position, playerPosition, out RaycastHit hit, sightDontIgnore))
                 {
@@ -302,34 +325,12 @@ public class AI : MonoBehaviour
     {
         Vector3 newPosition = new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
             Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
-        while (CheckIfPositionIsWalkable(newPosition) == false)
+        while (agent.CalculatePath(newPosition, agent.path) == false)
         {
-            Debug.Log("Redoing point...");
             newPosition = new Vector3(Random.Range(-boundBox.extents.x + boundBox.center.x, boundBox.extents.x + boundBox.center.x), transform.position.y,
             Random.Range(-boundBox.extents.z + boundBox.center.z, boundBox.extents.z + boundBox.center.z));
         }
         return newPosition;
-    }
-
-    private bool CheckIfPositionIsWalkable(Vector3 position)
-    {
-        bool check = false;
-        Collider[] colliderCheck = Physics.OverlapSphere(position, 0.5f);
-        foreach (Collider col in colliderCheck)
-        {
-            if (col.CompareTag("Building") == false)
-            {
-                check = true;
-            }
-            else
-            {
-                check = false;
-                Debug.Log(check);
-                return check;
-            }
-        }
-        Debug.Log(check);
-        return check;
     }
 
     /// <summary>
@@ -340,9 +341,8 @@ public class AI : MonoBehaviour
     {
         Vector3 newPosition = new Vector3(Random.Range(-investigateBox.extents.x + investigateBox.center.x, investigateBox.extents.x + investigateBox.center.x), transform.position.y,
             Random.Range(-investigateBox.extents.z + investigateBox.center.z, investigateBox.extents.z + investigateBox.center.z));
-        while (CheckIfPositionIsWalkable(newPosition) == false)
+        while (agent.CalculatePath(newPosition, agent.path) == false)
         {
-            Debug.Log("Redoing point...");
             newPosition = new Vector3(Random.Range(-investigateBox.extents.x + investigateBox.center.x, investigateBox.extents.x + investigateBox.center.x), transform.position.y,
             Random.Range(-investigateBox.extents.z + investigateBox.center.z, investigateBox.extents.z + investigateBox.center.z));
         }
