@@ -363,14 +363,14 @@ public class AI : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(investigateBox.center, investigateBox.size);
-        if (Application.isEditor)
-        {
-            Handles.color = Color.white;
-            Handles.DrawWireArc(middlePosition, Vector3.up, Vector3.forward, 360, viewRadius);
-            Handles.color = new Color(1, 0, 0, 0.2f);
-            Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, viewAngle, viewRadius);
-            Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, -viewAngle, viewRadius);
-        }
+        //if (Application.isEditor)
+        //{
+        //    Handles.color = Color.white;
+        //    Handles.DrawWireArc(middlePosition, Vector3.up, Vector3.forward, 360, viewRadius);
+        //    Handles.color = new Color(1, 0, 0, 0.2f);
+        //    Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, viewAngle, viewRadius);
+        //    Handles.DrawSolidArc(middlePosition, Vector3.up, transform.forward, -viewAngle, viewRadius);
+        //}
         // patrol point drawing
         if (storedInvestigatePoints.Length > 0)
         {
