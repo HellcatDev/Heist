@@ -15,7 +15,7 @@ public class Door : InteractableObject
     public override void Activate()
     {
         if (open)
-            {
+        {
             anim.SetBool("Opened", false);
             open = false;
         }
