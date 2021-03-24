@@ -9626,6 +9626,7 @@ GameObject:
   - component: {fileID: 975671238}
   - component: {fileID: 975671240}
   - component: {fileID: 975671239}
+  - component: {fileID: 975671241}
   m_Layer: 0
   m_Name: Door Moment
   m_TagString: Untagged
@@ -9680,6 +9681,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &975671241
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975671237}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.4986203, y: 2.5962777, z: 1}
+  m_Center: {x: 0.74931026, y: 0.2831986, z: 3.5429135e-15}
 --- !u!1 &979668662
 GameObject:
   m_ObjectHideFlags: 0
@@ -23554,7 +23568,6 @@ GameObject:
   - component: {fileID: 8451435737227941053}
   - component: {fileID: 8451435737227941061}
   - component: {fileID: 8451435737227941064}
-  - component: {fileID: 8451435737227941065}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -23635,19 +23648,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8451435737227941065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8451435737227941060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb77ef4101a846543a37fa4039ff9375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionDistance: 2.5
 --- !u!4 &8529429291319614070
 Transform:
   m_ObjectHideFlags: 0
