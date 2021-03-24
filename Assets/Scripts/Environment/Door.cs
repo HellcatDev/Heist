@@ -7,6 +7,8 @@ public class Door : InteractableObject
     private Animator anim;
     private bool open = false;
 
+    public bool locked = false;
+
     private void Awake()
     {
         anim = gameObject.transform.GetComponent<Animator>();
@@ -14,15 +16,34 @@ public class Door : InteractableObject
 
     public override void Activate()
     {
-        if (open)
+        if (locked == false)
         {
-            anim.SetBool("Opened", false);
-            open = false;
+            if (open)
+            {
+                anim.SetBool("Opened", false);
+                open = false;
+            }
+            else
+            {
+                anim.SetBool("Opened", true);
+                open = true;
+            }
         }
         else
         {
-            anim.SetBool("Opened", true);
-            open = true;
+            if (KeyChain.redKey == true)
+            {
+                if (open)
+                {
+                    anim.SetBool("Opened", false);
+                    open = false;
+                }
+                else
+                {
+                    anim.SetBool("Opened", true);
+                    open = true;
+                }
+            }
         }
     }
 }
