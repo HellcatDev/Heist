@@ -19,6 +19,7 @@ public class TextFileManager
         string dirPath = Application.dataPath + "/Resources/" + fileName + ".txt";
         if (!File.Exists(dirPath))
         {
+            Debug.LogError("sheit dawg it already exists and its still writing a new lines");
             Directory.CreateDirectory(Application.dataPath + "/Resources");
             File.WriteAllText(dirPath, fileName + "\n");
         }
@@ -71,7 +72,7 @@ public class TextFileManager
     {
         ReadFileContents(fileName);
         string dirPath = Application.dataPath + "/Resources/" + fileName + ".txt";
-        string tContents = key + "," + value + "\n";
+        string tContents = key + "," + value;
         string timeStamp = "Time Stamp: " + System.DateTime.Now;
         if(File.Exists(dirPath))
         {
